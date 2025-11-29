@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource]
+#[ApiFilter(RangeFilter::class, properties: ['duration'])]
 class Song
 {
     #[ORM\Id]
@@ -18,7 +21,7 @@ class Song
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $duration = null;
 
     #[ORM\Column(nullable: true)]

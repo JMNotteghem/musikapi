@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GraphQl\DeleteMutation;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use App\ApiResource\StyleEnum;
@@ -16,12 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArtistRepository::class)]
 #[ApiResource]
+#[Query]
 #[QueryCollection(
     parameters: [
-        'name' => new QueryParameter(filter: new ExactFilter()),
+        'name' => new QueryParameter(filter: new PartialSearchFilter()),
         'style' => new QueryParameter(filter: new PartialSearchFilter()),
     ],
 )]
+#[Mutation(name: 'create')]
+#[Mutation(name: 'update')]
+#[DeleteMutation(name: 'delete')]
 class Artist
 {
     #[ORM\Id]
